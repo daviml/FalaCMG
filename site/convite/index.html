@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0c0d12" />
+    <title>Convite · FalaCMG</title>
+    <meta name="description" content="Você foi convidado para uma sala no FalaCMG." />
+    <meta name="robots" content="noindex" />
+    <link rel="icon" type="image/png" href="/icon.png" />
+    <link rel="stylesheet" href="/style.css" />
+    <script src="/config.js"></script>
+  </head>
+  <body>
+    <main class="invite-page">
+      <div class="invite-card" id="card">
+        <div class="room-tile" id="tile">?</div>
+        <h1 id="title">Convite para o <span>FalaCMG</span></h1>
+        <p id="desc">Escolha como quer entrar na sala.</p>
+
+        <a class="btn btn-primary" id="web" href="/app/">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" /><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20" /></svg>
+          Entrar pelo navegador
+        </a>
+        <a class="btn btn-ghost" id="desktop" href="#">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" /><path d="M8 21h8M12 17v4" /></svg>
+          Abrir no app do Windows
+        </a>
+        <p class="small" id="download-line">Ainda não tem o app? <a id="download" href="/#versoes">Baixar para Windows</a></p>
+
+        <div class="divider">sem conta · nada fica salvo</div>
+        <p class="small"><a href="/">O que é o FalaCMG?</a></p>
+      </div>
+    </main>
+
+    <script>
+      // O código do convite fica depois do # (nunca vai para o servidor): base64url de {"n": sala, "p": senha}
+      const code = location.hash.slice(1).replace(/^entrar\//, '')
+      const decode = (s) => {
+        try {
+          const bin = atob(s.replace(/-/g, '+').replace(/_/g, '/'))
+          const data = JSON.parse(new TextDecoder().decode(Uint8Array.from(bin, (c) => c.charCodeAt(0))))
+          return data && data.n ? String(data.n) : null
+        } catch {
+          return null
+        }
+      }
+      const room = /^[A-Za-z0-9_-]{8,}$/.test(code) ? decode(code) : null
+      const $ = (id) => document.getElementById(id)
+
+      if (room) {
+        const hue = [...room].reduce((h, c) => (h * 31 + c.charCodeAt(0)) % 360, 7)
+        $('tile').textContent = room.trim()[0].toUpperCase()
+        $('tile').style.background = `hsl(${hue} 45% 22%)`
+        $('tile').style.color = `hsl(${hue} 80% 75%)`
+        $('title').innerHTML = 'Bora pra sala <span></span>?'
+        $('title').querySelector('span').textContent = room
+        $('desc').textContent = 'Te chamaram para conversar. Escolha como quer entrar:'
+        $('web').href = '/app/#entrar/' + code
+        $('desktop').href = 'falacmg://entrar/' + code
+        document.title = `${room} · Convite FalaCMG`
+      } else {
+        $('title').innerHTML = 'Convite <span>inválido</span>'
+        $('desc').textContent = 'Esse link está incompleto. Peça para te mandarem o convite de novo.'
+        $('desktop').style.display = 'none'
+        $('web').lastChild.textContent = ' Abrir o FalaCMG'
+      }
+
+      const url = window.FALACMG && window.FALACMG.downloadUrl
+      if (url) {
+        $('download').href = url
+        $('download').target = '_blank'
+        $('download').rel = 'noopener'
+      }
+    </script>
+  </body>
+</html>

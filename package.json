@@ -1,0 +1,40 @@
+{
+  "name": "falacmg",
+  "version": "0.2.0",
+  "description": "Voz, chat e transmissão de tela P2P para amigos",
+  "main": "out/main/index.js",
+  "scripts": {
+    "dev": "electron-vite dev",
+    "dev:b": "electron-vite dev -- --profile=b",
+    "build": "electron-vite build",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "icon": "node scripts/make-icon.mjs",
+    "dist": "electron-vite build && electron-builder --win --x64",
+    "dev:web": "vite --config vite.web.config.mts",
+    "build:web": "node scripts/build-web.mjs",
+    "preview:web": "node scripts/serve-web.mjs"
+  },
+  "author": "Davi Ladeira",
+  "license": "UNLICENSED",
+  "type": "commonjs",
+  "dependencies": {
+    "uiohook-napi": "^1.5.5"
+  },
+  "devDependencies": {
+    "@fontsource-variable/manrope": "^5.3.0",
+    "@sapphi-red/web-noise-suppressor": "^0.4.1",
+    "@types/node": "^26.6.5",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.2",
+    "electron": "^44.7.2",
+    "electron-builder": "^26.15.3",
+    "electron-vite": "^6.0.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "trystero": "^0.26.0",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.4",
+    "zustand": "^5.0.15"
+  }
+}

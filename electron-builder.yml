@@ -1,0 +1,45 @@
+appId: br.com.falacmg
+# uiohook-napi é N-API com binários prontos (prebuilds/win32-x64): não precisa recompilar
+npmRebuild: false
+productName: FalaCMG
+copyright: Davi Ladeira
+
+directories:
+  output: dist
+  buildResources: resources
+
+# O Vite já embute React, Trystero etc. em out/; só o módulo nativo do PTT vai como dependência
+files:
+  - out/**
+  - resources/**
+  - package.json
+
+win:
+  target:
+    - target: nsis
+      arch: x64
+    - target: portable
+      arch: x64
+    - target: zip
+      arch: x64
+  icon: resources/icon.png
+  # Sem "Setup" no nome: o Windows trata esses .exe como instalador e exige elevação ao gerar o desinstalador
+  artifactName: FalaCMG-${version}.${ext}
+
+portable:
+  artifactName: FalaCMG-${version}-portatil.${ext}
+
+nsis:
+  oneClick: true
+  perMachine: false
+  createDesktopShortcut: always
+  createStartMenuShortcut: true
+  shortcutName: FalaCMG
+  runAfterFinish: true
+  deleteAppDataOnUninstall: true
+
+# Links de convite falacmg://entrar/...
+protocols:
+  - name: Convite FalaCMG
+    schemes:
+      - falacmg
