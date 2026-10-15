@@ -1,6 +1,6 @@
 {
   "name": "falacmg",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Voz, chat e transmissão de tela P2P para amigos",
   "main": "out/main/index.js",
   "scripts": {
@@ -9,7 +9,7 @@
     "build": "electron-vite build",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "icon": "node scripts/make-icon.mjs",
-    "dist": "electron-vite build && electron-builder --win --x64",
+    "dist": "electron-vite build && electron-builder --win --x64 --publish never",
     "dev:web": "vite --config vite.web.config.mts",
     "build:web": "node scripts/build-web.mjs",
     "preview:web": "node scripts/serve-web.mjs"
